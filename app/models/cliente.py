@@ -9,7 +9,7 @@ class Cliente(db.Model):
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     nome = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), unique=True, nullable=False)
+    email = db.Column(db.String(150), unique=True, nullable=False)
 
     pedidos = relationship('Pedido', back_populates='cliente', cascade='all, delete-orphan')
 

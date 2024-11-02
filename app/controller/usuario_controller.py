@@ -11,7 +11,7 @@ usuario = Blueprint('usuarios', __name__)
 
 class UsuarioSchema(Schema):
     nome = fields.String(required=True, validate=validate.Length(min=3, max=255))
-    email = fields.Email(required=True, validate=validate.Length(max=150))
+    email = fields.Email(required=True, validate=validate.Length(max=255))
     senha = fields.String(
         required=True,
         validate=validate.Length(min=6, max=10)
@@ -50,12 +50,9 @@ def create_usuario():
         nome = valida_data.get('nome').lower()
         email = valida_data.get('email').lower()
         senha = valida_data.get('senha')
-
-        if Usuario.query.filter_by(email=email.first()):
+        
+        if Usuario.query.filter_by(email=email).first():
             abort(400, description="E-mail já está cadastrado.")
-
-        if not nome or not email or not senha:
-            abort(400, description="Nome, email e senha são campos obrigatórios.")
 
         encrypted_senha = Encryption().encrypt(senha)
 
@@ -83,7 +80,7 @@ def create_usuario():
 
 @usuario.route('/usuarios/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_usuario():
+def update_usuario(id):
     data = request.get_json()
     schema = UsuarioSchema()
 
@@ -100,10 +97,10 @@ def update_usuario():
         email = valida_data.get('email').lower()
         senha = valida_data.get('senha')
 
-        email_existe = Usuario.query.filter_by(email=email.first())
+        email_existe = Usuario.query.filter_by(email=email).first()
                                                
-        if email_existe and email_existe.id != email.id:
-            abort(400, description="E-mail já está cadastrado.")
+        if email_existe and email_existe.id != usuario.id:
+            abort(400, description="Email já está cadastrado.")
 
         encrypted_senha = Encryption().encrypt(senha)
 

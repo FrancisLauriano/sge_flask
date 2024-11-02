@@ -23,9 +23,6 @@ def create_produto():
         nome = valida_data.get('nome').lower()
         id_categoria = valida_data.get('id_categoria').lower()
 
-        if not nome or not id_categoria:
-            abort(400, description="Nome e categoria são campos obrigatórios.")
-
         novo_produto = Produto(nome=nome, id_categoria=id_categoria)
 
         db.session.add(novo_produto)

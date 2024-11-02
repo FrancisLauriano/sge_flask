@@ -17,7 +17,13 @@ def create_app():
     init_cors(app)
 
     from app.controller.usuario_controller import usuario
+    from app.controller.cliente_controller import cliente
+    from app.controller.produto_controller import produto
+
+
     app.register_blueprint(usuario)
+    app.register_blueprint(cliente)
+    app.register_blueprint(produto)
 
 
     return app

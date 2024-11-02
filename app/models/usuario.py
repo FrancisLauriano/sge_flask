@@ -9,7 +9,7 @@ class Usuario(db.Model):
     __tablename__ = 'usuarios'
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     nome = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(150), unique=True, nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
     senha = db.Column(db.String(255), nullable=False)
     data_cadastro = db.Column(db.TIMESTAMP, server_default=func.now())
 
