@@ -40,7 +40,7 @@ def login(self, email, senha):
 
 
 @usuario.route('/usuarios', methods=['POST'])
-def create_usuario():
+def create_usuario(novo_usuario):
     data = request.get_json()
     schema = UsuarioSchema()
 
@@ -80,7 +80,7 @@ def create_usuario():
 
 @usuario.route('/usuarios/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_usuario(id):
+def update_usuario(id, usuario):
     data = request.get_json()
     schema = UsuarioSchema()
 
@@ -153,7 +153,7 @@ def get_all_usuario():
 
 @usuario.route('/usuarios/<string:id>', methods=['GET'])
 @jwt_required()
-def get_by_id_usuario(id):
+def get_by_id_usuario(id, usuario):
     try:
         usuario = Usuario.query.get(id)
 

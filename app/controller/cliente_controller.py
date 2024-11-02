@@ -13,7 +13,7 @@ class ClienteSchema(Schema):
 
 @cliente.route('/clientes', methods=['POST'])
 @jwt_required()
-def create_cliente():
+def create_cliente(novo_cliente):
     data = request.get_json()
     schema = ClienteSchema() 
 
@@ -48,7 +48,7 @@ def create_cliente():
 
 @cliente.route('/clientes/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_cliente(id):
+def update_cliente(id, cliente):
     data = request.get_json()
     schema = ClienteSchema()
 

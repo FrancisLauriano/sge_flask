@@ -3,17 +3,17 @@ from app.models.produto import Produto
 from flask import request, jsonify, abort, Blueprint
 from flask_jwt_extended import jwt_required
 from marshmallow import Schema, fields, validate, ValidationError
+from sqlalchemy.orm import joinedload
 
 produto = Blueprint('produtos', __name__)
 
 class ProdutoSchema(Schema):
     nome = fields.String(required=True, validate=validate.Length(min=3, max=255))
     id_categoria = fields.String(required=True)
-    
 
 @produto.route('/produtos', methods=['POST'])
 @jwt_required()
-def create_produto():
+def create_produto(novo_produto):
     data = request.get_json()
     schema = ProdutoSchema() 
 
@@ -45,7 +45,7 @@ def create_produto():
 
 @produto.route('/produtos/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_produto():
+def update_produto(id, produto):
     data = request.get_json()
     schema = ProdutoSchema()
 
@@ -85,7 +85,7 @@ def update_produto():
 @jwt_required()
 def get_all_produto():
     try:
-        produtos = Produto.query.all()
+        produtos = Produto.query.options(joinedload(Produto.categoria)).all()
 
         if not produtos:
             abort(404, description="Nenhum produto encontrado.")
@@ -95,7 +95,8 @@ def get_all_produto():
             {
                 'id': produto.id,
                 'nome': produto.nome,
-                'id_categoria': produto.id_categoria
+                'id_categoria': produto.id_categoria,
+                'nome_categoria': produto.categoria.nome if produto.categoria else None
             } for produto in produtos
         ]), 200
     
@@ -108,7 +109,7 @@ def get_all_produto():
 @jwt_required()
 def get_by_id_produto(id):
     try:
-        produto = Produto.query.get(id)
+        produto = Produto.query.filter_by(id=id).options(joinedload(Produto.categoria)).first()
 
         if not produto:
             abort(404, description="Produto não encontrado.")
@@ -118,7 +119,8 @@ def get_by_id_produto(id):
             {
                 'id': produto.id,
                 'nome': produto.nome,
-                'id_categoria': produto.id_categoria
+                'id_categoria': produto.id_categoria,
+                'nome_categoria': produto.categoria.nome if produto.categoria else None
             }
         ), 200
     

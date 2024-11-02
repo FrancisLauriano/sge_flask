@@ -8,7 +8,7 @@ class Categoria(db.Model):
     __tablename__ = 'categorias'
 
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    nome = db.Column(db.String(150), nullable=False)
+    nome = db.Column(db.String(255), nullable=False)
 
     produtos = relationship('Produto', back_populates='categoria')
 
