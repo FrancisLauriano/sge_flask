@@ -190,8 +190,7 @@ def delete_by_id_usuario(id):
         db.session.delete(usuario)
         db.session.commit()
         
-        return jsonify(""), 204
-    
+        return '', 204
    
     except Exception as e:
         abort(500, description=f"Erro ao excluir usuário: {str(e)}")                        
