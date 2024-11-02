@@ -13,7 +13,7 @@ class CategoriaSchema(Schema):
 
 @categoria.route('/categorias', methods=['POST'])
 @jwt_required()
-def create_categoria(nova_categoria):
+def create_categoria():
     data = request.get_json()
     schema = CategoriaSchema() 
 
@@ -38,21 +38,20 @@ def create_categoria(nova_categoria):
         abort(400, description=f"Erro na validação dos dados: {ve.messages}")
 
     except Exception as e:
-        abort(500, description=f"Erro no cadastro do categoria: {str(e)}")
+        abort(500, description=f"Erro no cadastro da categoria: {str(e)}")
 
 
 @categoria.route('/categorias/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_categoria(id, categoria):
+def update_categoria(id):
     data = request.get_json()
     schema = CategoriaSchema()
 
     categoria = Categoria.query.get(id)
 
     if not categoria:
-        abort(404, description="categoria não encontrado.")
+        abort(404, description="Categoria não encontrada.")
     
-
     try:
         valida_data = schema.load(data)
 
@@ -73,7 +72,7 @@ def update_categoria(id, categoria):
         abort(400, description=f"Erro na validação dos dados: {ve.messages}")
 
     except Exception as e:
-        abort(500, description=f"Erro ao atualizar do categoria: {str(e)}")
+        abort(500, description=f"Erro ao atualizar a categoria: {str(e)}")
 
 
 @categoria.route('/categorias', methods=['GET'])
@@ -83,9 +82,8 @@ def get_all_categoria():
         categorias = Categoria.query.all()
 
         if not categorias:
-            abort(404, description="Nenhum categoria encontrado.")
+            abort(404, description="Nenhuma categoria encontrada.")
 
-        
         return jsonify([
             {
                 'id': categoria.id,
@@ -93,7 +91,6 @@ def get_all_categoria():
             } for categoria in categorias
         ]), 200
     
-   
     except Exception as e:
         abort(500, description=f"Erro ao listar categorias: {str(e)}")        
 
@@ -105,18 +102,16 @@ def get_by_id_categoria(id):
         categoria = Categoria.query.filter_by(id=id).options(joinedload(Categoria.produtos)).first()
 
         if not categoria:
-            abort(404, description="categoria não encontrado.")
+            abort(404, description="Categoria não encontrada.")
 
-        
         return jsonify(
             {
                 'id': categoria.id,
                 'nome': categoria.nome,
-                'nomes_produtos': categoria.produtos.nome if categoria.produtos else None
+                'nomes_produtos': [produto.nome for produto in categoria.produtos] if categoria.produtos else []
             }
         ), 200
     
-   
     except Exception as e:
         abort(500, description=f"Erro ao buscar categoria: {str(e)}")                
 
@@ -128,7 +123,7 @@ def delete_by_id_categoria(id):
         categoria = Categoria.query.get(id)
 
         if not categoria:
-            abort(404, description="categoria não encontrado.")
+            abort(404, description="Categoria não encontrada.")
 
         db.session.delete(categoria)
         db.session.commit()
@@ -136,4 +131,4 @@ def delete_by_id_categoria(id):
         return '', 204
     
     except Exception as e:
-        abort(500, description=f"Erro ao excluir categoria: {str(e)}")                        
+        abort(500, description=f"Erro ao excluir categoria: {str(e)}")

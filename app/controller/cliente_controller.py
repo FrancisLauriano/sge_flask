@@ -13,7 +13,7 @@ class ClienteSchema(Schema):
 
 @cliente.route('/clientes', methods=['POST'])
 @jwt_required()
-def create_cliente(novo_cliente):
+def create_cliente():
     data = request.get_json()
     schema = ClienteSchema() 
 
@@ -48,14 +48,14 @@ def create_cliente(novo_cliente):
 
 @cliente.route('/clientes/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_cliente(id, cliente):
+def update_cliente(id):
     data = request.get_json()
     schema = ClienteSchema()
 
     cliente = Cliente.query.get(id)
 
     if not cliente:
-        abort(404, description="cliente não encontrado.")
+        abort(404, description="Cliente não encontrado.")
     
 
     try:
@@ -67,7 +67,7 @@ def update_cliente(id, cliente):
         email_existe = Cliente.query.filter_by(email=email).first()
                                                
         if email_existe and email_existe.id != cliente.id:
-            abort(400, description="Email já está cadastrado.")
+            abort(400, description="E-mail já está cadastrado.")
 
         cliente.nome = nome
         cliente.email = email
@@ -86,7 +86,7 @@ def update_cliente(id, cliente):
         abort(400, description=f"Erro na validação dos dados: {ve.messages}")
 
     except Exception as e:
-        abort(500, description=f"Erro ao atualizar do cliente: {str(e)}")
+        abort(500, description=f"Erro ao atualizar o cliente: {str(e)}")
 
 
 @cliente.route('/clientes', methods=['GET'])
@@ -98,7 +98,6 @@ def get_all_cliente():
         if not clientes:
             abort(404, description="Nenhum cliente encontrado.")
 
-        
         return jsonify([
             {
                 'id': cliente.id,
@@ -107,7 +106,6 @@ def get_all_cliente():
             } for cliente in clientes
         ]), 200
     
-   
     except Exception as e:
         abort(500, description=f"Erro ao listar clientes: {str(e)}")        
 
@@ -119,9 +117,8 @@ def get_by_id_cliente(id):
         cliente = Cliente.query.get(id)
 
         if not cliente:
-            abort(404, description="cliente não encontrado.")
+            abort(404, description="Cliente não encontrado.")
 
-        
         return jsonify(
             {
                 'id': cliente.id,
@@ -130,7 +127,6 @@ def get_by_id_cliente(id):
             }
         ), 200
     
-   
     except Exception as e:
         abort(500, description=f"Erro ao buscar cliente: {str(e)}")                
 
@@ -142,7 +138,7 @@ def delete_by_id_cliente(id):
         cliente = Cliente.query.get(id)
 
         if not cliente:
-            abort(404, description="cliente não encontrado.")
+            abort(404, description="Cliente não encontrado.")
 
         db.session.delete(cliente)
         db.session.commit()
@@ -150,4 +146,4 @@ def delete_by_id_cliente(id):
         return '', 204
     
     except Exception as e:
-        abort(500, description=f"Erro ao excluir cliente: {str(e)}")                        
+        abort(500, description=f"Erro ao excluir cliente: {str(e)}")

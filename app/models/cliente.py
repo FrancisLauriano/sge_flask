@@ -2,7 +2,6 @@ from app import db
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 import uuid
-from sqlalchemy.sql import func
 
 class Cliente(db.Model):
     __tablename__ = 'clientes'
@@ -14,13 +13,8 @@ class Cliente(db.Model):
     pedidos = relationship('Pedido', back_populates='cliente', cascade='all, delete-orphan')
 
     def __init__(self, nome, email):
-        self._nome = nome
-        self._email = email
+        self.nome = nome
+        self.email = email
 
     def __repr__(self) -> str:
-        return f'<Nome: {self._nome}, Email: {self._email}>'     
-
-
-
-
-
+        return f'<Nome: {self.nome}, Email: {self.email}>'

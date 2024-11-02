@@ -23,7 +23,6 @@ def create_app():
     from app.controller.pedido_controller import pedido
     from app.controller.detalhe_pedido_controller import detalhe_pedido
 
-
     app.register_blueprint(usuario)
     app.register_blueprint(cliente)
     app.register_blueprint(produto)
@@ -31,9 +30,4 @@ def create_app():
     app.register_blueprint(pedido)
     app.register_blueprint(detalhe_pedido)
 
-
     return app
-
-
-    
-

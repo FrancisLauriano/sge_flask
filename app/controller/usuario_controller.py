@@ -19,7 +19,7 @@ class UsuarioSchema(Schema):
 
 
 @usuario.route('/login', methods=['POST'])
-def login(self, email, senha):
+def login():
     try:
         data = request.get_json()
         email = data.get('email').lower()
@@ -30,17 +30,18 @@ def login(self, email, senha):
         if not usuario:
             abort(404, description="Usuário não encontrado.")
 
-        if not self.encryption.decrypt(usuario.senha) == senha:
+        # Use Encryption().decrypt para comparar a senha
+        if Encryption().decrypt(usuario.senha) != senha:
             abort(401, description="Senha inválida.")
 
         token = JWTManager.create_token({"id": str(usuario.id)})
         return jsonify({"token": token}), 200
     except Exception as e:
-        abort(404, description=f"Erro ao realizar login: {str(e)}")
+        abort(500, description=f"Erro ao realizar login: {str(e)}")
 
 
 @usuario.route('/usuarios', methods=['POST'])
-def create_usuario(novo_usuario):
+def create_usuario():
     data = request.get_json()
     schema = UsuarioSchema()
 
@@ -66,7 +67,6 @@ def create_usuario(novo_usuario):
                 'id': novo_usuario.id,
                 'nome': novo_usuario.nome,
                 'email': novo_usuario.email,
-                'senha': novo_usuario.senha,
                 'data_cadastro': novo_usuario.data_cadastro
             }
         ), 201
@@ -80,7 +80,7 @@ def create_usuario(novo_usuario):
 
 @usuario.route('/usuarios/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_usuario(id, usuario):
+def update_usuario(id):
     data = request.get_json()
     schema = UsuarioSchema()
 
@@ -115,7 +115,6 @@ def update_usuario(id, usuario):
                 'id': usuario.id,
                 'nome': usuario.nome,
                 'email': usuario.email,
-                'senha': usuario.senha,
                 'data_cadastro': usuario.data_cadastro
             }
         ), 200
@@ -124,7 +123,7 @@ def update_usuario(id, usuario):
         abort(400, description=f"Erro na validação dos dados: {ve.messages}")
 
     except Exception as e:
-        abort(500, description=f"Erro ao atualizar do usuário: {str(e)}")
+        abort(500, description=f"Erro ao atualizar o usuário: {str(e)}")
 
 
 @usuario.route('/usuarios', methods=['GET'])
@@ -146,14 +145,13 @@ def get_all_usuario():
             } for usuario in usuarios
         ]), 200
     
-   
     except Exception as e:
-        abort(500, description=f"Erro ao listar usuários: {str(e)}")        
+        abort(500, description=f"Erro ao listar usuários: {str(e)}")
 
 
 @usuario.route('/usuarios/<string:id>', methods=['GET'])
 @jwt_required()
-def get_by_id_usuario(id, usuario):
+def get_by_id_usuario(id):
     try:
         usuario = Usuario.query.get(id)
 
@@ -170,9 +168,8 @@ def get_by_id_usuario(id, usuario):
             }
         ), 200
     
-   
     except Exception as e:
-        abort(500, description=f"Erro ao buscar usuário: {str(e)}")                
+        abort(500, description=f"Erro ao buscar usuário: {str(e)}")
 
 
 @usuario.route('/usuarios/<string:id>', methods=['DELETE'])
@@ -190,4 +187,4 @@ def delete_by_id_usuario(id):
         return '', 204
    
     except Exception as e:
-        abort(500, description=f"Erro ao excluir usuário: {str(e)}")                        
+        abort(500, description=f"Erro ao excluir usuário: {str(e)}")

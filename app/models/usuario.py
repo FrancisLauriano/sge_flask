@@ -1,9 +1,7 @@
 from app import db
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy.orm import relationship
-from sqlalchemy import CheckConstraint
-import uuid
 from sqlalchemy.sql import func
+import uuid
 
 class Usuario(db.Model):
     __tablename__ = 'usuarios'
@@ -14,14 +12,9 @@ class Usuario(db.Model):
     data_cadastro = db.Column(db.TIMESTAMP, server_default=func.now())
 
     def __init__(self, nome, email, senha):
-        self._nome = nome
-        self._email = email
-        self._senha = senha
+        self.nome = nome
+        self.email = email
+        self.senha = senha
 
     def __repr__(self) -> str:
-        return f'<Usuario: {self._nome}, Email: {self._email}, Senha: {self._senha}>'
-
-
-
-
-
+        return f'<Usuario: {self.nome}, Email: {self.email}>'

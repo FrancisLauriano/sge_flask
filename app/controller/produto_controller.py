@@ -13,7 +13,7 @@ class ProdutoSchema(Schema):
 
 @produto.route('/produtos', methods=['POST'])
 @jwt_required()
-def create_produto(novo_produto):
+def create_produto():
     data = request.get_json()
     schema = ProdutoSchema() 
 
@@ -45,7 +45,7 @@ def create_produto(novo_produto):
 
 @produto.route('/produtos/<string:id>', methods=['PUT'])
 @jwt_required()
-def update_produto(id, produto):
+def update_produto(id):
     data = request.get_json()
     schema = ProdutoSchema()
 
@@ -54,7 +54,6 @@ def update_produto(id, produto):
     if not produto:
         abort(404, description="Produto não encontrado.")
     
-
     try:
         valida_data = schema.load(data)
 
@@ -78,7 +77,7 @@ def update_produto(id, produto):
         abort(400, description=f"Erro na validação dos dados: {ve.messages}")
 
     except Exception as e:
-        abort(500, description=f"Erro ao atualizar do produto: {str(e)}")
+        abort(500, description=f"Erro ao atualizar o produto: {str(e)}")
 
 
 @produto.route('/produtos', methods=['GET'])
@@ -90,7 +89,6 @@ def get_all_produto():
         if not produtos:
             abort(404, description="Nenhum produto encontrado.")
 
-        
         return jsonify([
             {
                 'id': produto.id,
@@ -100,7 +98,6 @@ def get_all_produto():
             } for produto in produtos
         ]), 200
     
-   
     except Exception as e:
         abort(500, description=f"Erro ao listar produtos: {str(e)}")        
 
@@ -114,7 +111,6 @@ def get_by_id_produto(id):
         if not produto:
             abort(404, description="Produto não encontrado.")
 
-        
         return jsonify(
             {
                 'id': produto.id,
@@ -124,7 +120,6 @@ def get_by_id_produto(id):
             }
         ), 200
     
-   
     except Exception as e:
         abort(500, description=f"Erro ao buscar produto: {str(e)}")                
 
@@ -144,4 +139,4 @@ def delete_by_id_produto(id):
         return '', 204
     
     except Exception as e:
-        abort(500, description=f"Erro ao excluir produto: {str(e)}")                        
+        abort(500, description=f"Erro ao excluir produto: {str(e)}")

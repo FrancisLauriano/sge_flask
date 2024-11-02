@@ -12,12 +12,11 @@ class Produto(db.Model):
     id_categoria = db.Column(UUID(as_uuid=True), ForeignKey('categorias.id', ondelete='SET NULL'))
 
     categoria = relationship('Categoria', back_populates='produtos')
-
-    detalhe_pedido = relationship('DetalhePedido', back_populates='produtos', cascade="all, delete-orphan")
+    detalhe_pedido = relationship('DetalhePedido', back_populates='produto', cascade="all, delete-orphan")
 
     def __init__(self, nome, id_categoria):
         self.nome = nome
-        self.id_categogia = id_categoria 
+        self.id_categoria = id_categoria 
         
     def __repr__(self) -> str:
-        return f'<Empresa: {self.nome}, id_categogia: {self.id_categogia}>'
+        return f'<Nome: {self.nome}, id_categoria: {self.id_categoria}>'

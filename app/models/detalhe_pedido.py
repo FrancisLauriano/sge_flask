@@ -13,18 +13,14 @@ class DetalhePedido(db.Model):
     valor = db.Column(db.Numeric(10, 2), nullable=False)
     desconto = db.Column(db.Numeric(10, 2), nullable=False)
 
-    pedido = relationship('Pedido', back_populates='detalhe_pedidos')
-
-    produto = relationship('Produto', back_populates='detalhe_pedidos')
+    pedido = relationship('Pedido', back_populates='detalhe_pedido')
+    produto = relationship('Produto', back_populates='detalhe_pedido')
 
     def __init__(self, id_pedido, id_produto, valor, desconto):
-        self._id_pedido = id_pedido
-        self._id_produto = id_produto 
-        self._valor = valor
-        self._desconto = desconto
+        self.id_pedido = id_pedido
+        self.id_produto = id_produto 
+        self.valor = valor
+        self.desconto = desconto
         
     def __repr__(self) -> str:
-        return f'<ID Pedido: {self.id_pedido}, ID Produto: {self._id_produto}, Valor: {self._valor}, Desconto: {self._desconto} >'
-
-
-
+        return f'<ID Pedido: {self.id_pedido}, ID Produto: {self.id_produto}, Valor: {self.valor}, Desconto: {self.desconto}>'

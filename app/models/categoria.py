@@ -1,7 +1,6 @@
 from app import db
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
 import uuid
 
 class Categoria(db.Model):
@@ -13,9 +12,7 @@ class Categoria(db.Model):
     produtos = relationship('Produto', back_populates='categoria')
 
     def __init__(self, nome):
-        self._nome = nome
+        self.nome = nome
 
     def __repr__(self) -> str:
-        return f'Nome: {self._nome}'    
-
-
+        return f'Nome: {self.nome}'
