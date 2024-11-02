@@ -16,8 +16,8 @@ def create_app():
 
     init_cors(app)
 
-    # from app.routes.usuario_routes import usuario_routes
-    # app.register_blueprint(usuario_routes)
+    from app.controller.usuario_controller import usuario
+    app.register_blueprint(usuario)
 
 
     return app
