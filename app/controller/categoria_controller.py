@@ -21,9 +21,8 @@ def create_categoria(nova_categoria):
         valida_data = schema.load(data)
 
         nome = valida_data.get('nome').lower()
-        id_categoria = valida_data.get('id_categoria').lower()
 
-        nova_categoria = Categoria(nome=nome, id_categoria=id_categoria)
+        nova_categoria = Categoria(nome=nome)
 
         db.session.add(nova_categoria)
         db.session.commit()
@@ -31,8 +30,7 @@ def create_categoria(nova_categoria):
         return jsonify(
             {
                 'id': nova_categoria.id,
-                'nome': nova_categoria.nome,
-                'id_categoria': nova_categoria.id_categoria
+                'nome': nova_categoria.nome
             }
         ), 201
     
@@ -59,18 +57,15 @@ def update_categoria(id, categoria):
         valida_data = schema.load(data)
 
         nome = valida_data.get('nome').lower()
-        id_categoria = valida_data.get('id_categoria').lower()
 
         categoria.nome = nome
-        categoria.id_categoria = id_categoria
 
         db.session.commit()
 
         return jsonify(
             {
                 'id': categoria.id,
-                'nome': categoria.nome,
-                'id_categoria': categoria.id_categoria,
+                'nome': categoria.nome
             }
         ), 200
     
@@ -85,7 +80,7 @@ def update_categoria(id, categoria):
 @jwt_required()
 def get_all_categoria():
     try:
-        categorias = Categoria.query.options(joinedload(categoria.categoria)).all()
+        categorias = Categoria.query.all()
 
         if not categorias:
             abort(404, description="Nenhum categoria encontrado.")
@@ -94,9 +89,7 @@ def get_all_categoria():
         return jsonify([
             {
                 'id': categoria.id,
-                'nome': categoria.nome,
-                'id_categoria': categoria.id_categoria,
-                'nome_categoria': categoria.categoria.nome if categoria.categoria else None
+                'nome': categoria.nome
             } for categoria in categorias
         ]), 200
     
@@ -109,7 +102,7 @@ def get_all_categoria():
 @jwt_required()
 def get_by_id_categoria(id):
     try:
-        categoria = Categoria.query.filter_by(id=id).options(joinedload(categoria.categoria)).first()
+        categoria = Categoria.query.filter_by(id=id).options(joinedload(Categoria.produtos)).first()
 
         if not categoria:
             abort(404, description="categoria não encontrado.")
@@ -119,8 +112,7 @@ def get_by_id_categoria(id):
             {
                 'id': categoria.id,
                 'nome': categoria.nome,
-                'id_categoria': categoria.id_categoria,
-                'nome_categoria': categoria.categoria.nome if categoria.categoria else None
+                'nomes_produtos': categoria.produtos.nome if categoria.produtos else None
             }
         ), 200
     
