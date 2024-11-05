@@ -17,12 +17,12 @@
 :small_blue_diamond: [Descrição do Projeto](#descrição-do-projeto-writing_hand) :heavy_check_mark:  
 :small_blue_diamond: [Objetivos do Projeto](#objetivos-do-projeto-dart) :heavy_check_mark:  
 :small_blue_diamond: [Funcionalidades](#funcionalidades-video_game) :heavy_check_mark:  
-:small_blue_diamond: [Arquitetura](#arquitetura-triangular_ruler-straight_ruler) :heavy_check_mark:  
+:small_blue_diamond: [Arquitetura](#arquitetura-triangular_ruler-straight_ruler) :heavy_check_mark:
 :small_blue_diamond: [Rotas - Endpoints](#rotas---endpoints-arrows_clockwise) :heavy_check_mark:  
-:small_blue_diamond: [Criar e ativar ambiente virtual](#criar-e-ativar-ambiente-virtual-white_check_mark)   
-:small_blue_diamond: [Instalação das depedências](#instalação-das-depedências-arrow_down_small) 
+:small_blue_diamond: [Criar e ativar ambiente virtual](#criar-e-ativar-ambiente-virtual-white_check_mark)
+:small_blue_diamond: [Instalação das depedências](#instalação-das-depedências-arrow_down_small)
 :small_blue_diamond: [Executar Migrações](#executar-migrações-arrow_forward)
-:small_blue_diamond: [Executar App](#executar-app-arrow_forward)   
+:small_blue_diamond: [Executar App](#executar-app-arrow_forward)
 :small_blue_diamond: [Linguagens, Tecnologias e Bibliotecas Utilizadas](#linguagens-tecnologias-dependências-e-libs-utilizadas-hammer_and_wrench-gear-books)  
 
 ---
