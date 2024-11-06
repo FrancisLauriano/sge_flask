@@ -19,7 +19,7 @@ def create_pedido():
     try:
         valida_data = schema.load(data)
 
-        id_cliente = valida_data.get('id_cliente').lower()
+        id_cliente = valida_data.get('id_cliente')
 
         novo_pedido = Pedido(id_cliente=id_cliente)
 
@@ -55,7 +55,7 @@ def update_pedido(id):
     try:
         valida_data = schema.load(data)
 
-        id_cliente = valida_data.get('id_cliente').lower()
+        id_cliente = valida_data.get('id_cliente')
         pedido.id_cliente = id_cliente
 
         db.session.commit()

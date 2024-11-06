@@ -21,7 +21,7 @@ def create_produto():
         valida_data = schema.load(data)
 
         nome = valida_data.get('nome').lower()
-        id_categoria = valida_data.get('id_categoria').lower()
+        id_categoria = valida_data.get('id_categoria')
 
         novo_produto = Produto(nome=nome, id_categoria=id_categoria)
 
@@ -58,7 +58,7 @@ def update_produto(id):
         valida_data = schema.load(data)
 
         nome = valida_data.get('nome').lower()
-        id_categoria = valida_data.get('id_categoria').lower()
+        id_categoria = valida_data.get('id_categoria')
 
         produto.nome = nome
         produto.id_categoria = id_categoria
